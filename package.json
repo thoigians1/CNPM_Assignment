@@ -1,0 +1,23 @@
+{
+  "name": "se-restaurant-reservation",
+  "version": "1.0.0",
+  "description": "This Website is built using NodeJs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lehongduc200115/se-restaurant-reservation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lehongduc200115/se-restaurant-reservation/issues"
+  },
+  "homepage": "https://github.com/lehongduc200115/se-restaurant-reservation#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
