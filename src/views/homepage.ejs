@@ -1,0 +1,250 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="./css/homepage.css"> -->
+    <style>
+        .background_container {
+            background-color: #1178B3;
+        }
+
+        a {
+            cursor: pointer;
+        }
+
+        h6 {
+            font-size: 18px;
+        }
+
+        .text-color {
+            color: #ffffff;
+        }
+
+        .food-item {
+            cursor: pointer;
+            /* margin: 1px; */
+            border: solid #ccc 1px;
+            border-radius: 12px;
+        }
+
+        .cart {
+
+            height: 103rem;
+            position: absolute;
+            top: 70;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+
+            display: none;
+        }
+
+        .open {
+            display: block;
+        }
+    </style>
+    <title>Tu</title>
+</head>
+
+<body>
+    <header class="section-header">
+        <div class="background_container">
+
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <img src="https://cdn3.f-cdn.com/contestentries/1484825/33424121/5ca0940377bf4_thumb900.jpg"
+                            alt="logo" width="100" height="50">
+                    </div>
+                    <div class="col-lg-6 col-sm-9">
+
+                        <form action="#" class="search ">
+                            <div class=" input-group w-100 pt-3">
+                                <input type="text" class="form-control" placeholder="Search" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="widgets-wrap float-md-right">
+
+                            <div class="widget-header icontext">
+                                <div>
+                                    <div>
+                                        <a class="text-color">
+                                            <span> Đăng nhập </span>
+                                        </a>
+                                        |
+                                        <a class="text-color">
+                                            <span> Đăng ký </span>
+                                        </a>
+
+                                        <a class="ml-5" style="color: #ccc;" onclick="showCart()">
+                                            <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+
+    <div class="container">
+        <% for (let i=0; i < foodtypes.length; i++ ) { %>
+            <div class="row m-3">
+                <h3 class="col-12 mb-4">
+                    <%= foodtypes[i].name %>
+                </h3>
+
+                <% for (let j=0; j < foodtypes[i].Foods.length; j++ ) { %>
+                    <div class="col-md-3 mb-3 container">
+                        <div class="food-item">
+                            <div class="m-2">
+                                <img src="<%= foodtypes[i].Foods[j].image %>" alt="a" style="width: 100%;">
+                                <h6 style="width: 100%; height: 70px;" class="row-cols-12">
+                                    <%= foodtypes[i].Foods[j].name %>
+                                </h6>
+                                <div class="row">
+                                    <h5 class="col-8 col-md-6 col-lg-8">
+                                        <%= foodtypes[i].Foods[j].cost %>
+                                    </h5>
+                                    <div class="col-4 col-md-3 col-lg-4 float-right">
+                                        <form action="/add-foods-to-order" method="POST">
+                                            <input type="number" name="foodId" value="<%= foodtypes[i].Foods[j].id %>"
+                                                hidden>
+                                            <input type="text" name="name" value="<%= foodtypes[i].Foods[j].name %>"
+                                                hidden>
+                                            <input type="text" name="image" value="<%= foodtypes[i].Foods[j].image %>"
+                                                hidden>
+                                            <input type="number" name="cost" value="<%= foodtypes[i].Foods[j].cost %>"
+                                                hidden>
+                                            <input type="number" name="quantity" value="1" hidden>
+                                            <input type="number" name="orderId" value="<%= homeOrder.id %>" hidden>
+                                            <button type="submit" style="border: none; background-color: #ffffff;">
+                                                <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+            <% } %>
+    </div>
+
+    <div class="container-fluid cart js-cart">
+        <div class="col-12 col-sm-12 col-md-6 border border-primary float-right mb-2 bg-white">
+            <div class="m-4 row">
+                <i class="fas fa-shopping-cart col-2" style="font-size: 1.5rem;"></i>
+                <h5 class="col-8">Your cart</h5>
+                <button class="col-2 btn btn-danger" onclick="hideCart()">close</button>
+            </div>
+            <div class="m-2">
+                <% for (let i=0; i < contents.length; i++ ) { %>
+                    <div class="mt-2 mb-2 border border-primary rounded">
+                        <div class="row m-2">
+                            <div class="col-3">
+                                <img src="<%= contents[i].foodImage %>" alt="food" style="width: 100%;">
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <%= contents[i].foodName %>
+                                </div>
+                                <div>
+                                    <h6>Quantity: <span>
+                                            <%= contents[i].quantity%>
+                                        </span></h6>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <h5>
+                                    <%= contents[i].cost %>
+                                </h5>
+                                <a href="/delete-food-from-order?id=<%= contents[i].id %>"
+                                    class="float-right text-danger h3">
+                                    <!-- <i class="far fa-window-close"></i> -->
+                                    <i class="fas fa-times-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+            <div class="row">
+                <h5 class="col-9">total</h5>
+                <h5 class="col-3">
+                    <% let total=0; for (let i=0; i < contents.length; i++ ) { total
+                        +=Number(contents[i].cost)*Number(contents[i].quantity); }%>
+                        <%= total%>
+                </h5>
+            </div>
+            <form action="/payment" method="post">
+                <button class="mb-2 btn btn-primary btn-block">
+                    <h5>PAYMENT</h5>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        // const cartOpen = document.querySelectorAll('.js-open-cart')
+        const cart = document.querySelector('.js-cart')
+        // const modalContainer = document.querySelector('.js-modal-container')
+        // const cartClose = document.querySelector('.js-modal-close')
+
+        //hàm hiển thị (thêm class open)
+        function showCart() {
+            cart.classList.add('open');
+        }
+
+        //hàm ẩn modal mua vé (gở bỏ class open modal)
+        function hideCart() {
+            cart.classList.remove('open');
+        }
+
+
+        // cartOpen.addEventListener('click', showCart);
+
+
+        // cartClose.addEventListener('click', hideCart);
+
+        // cart.addEventListener('click', hideBuyTickets)
+
+        // cart.addEventListener('click', function (event) {
+        //     event.stopPropagation()
+        // })
+    </script>
+
+</body>
+
+</html>
