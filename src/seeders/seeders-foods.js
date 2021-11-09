@@ -85,7 +85,7 @@ module.exports = {
             },
             {
                 name: 'Cháo tim bầu dục',
-                cost: 550000,
+                cost: 55000,
                 image: 'https://d1sag4ddilekf6.azureedge.net/compressed/items/5-CYLACZKGMBTCAX-CYLACZKKCNTYGN/photo/1d334ec030d34e8e8a56d90913a0d78e_1570354141513224510.jpeg',
                 foodtypeId: 3,
                 createdAt: new Date(),
@@ -227,6 +227,8 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
+
+
 
         ]);
     },
