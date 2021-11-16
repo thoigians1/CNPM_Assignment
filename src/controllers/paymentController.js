@@ -1,9 +1,8 @@
-//import db from '../models/index';
 
-let getPayment = (req, res) => {
+let postPayment = (req, res) => {
     return res.render('payment.ejs');
 }
 
 module.exports = {
-    getPayment: getPayment
+    postPayment: postPayment
 }
