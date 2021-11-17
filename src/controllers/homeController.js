@@ -1,6 +1,7 @@
-
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
+const { Op } = require("sequelize");
+
 let getHomepage = async (req, res) => {
     try {
         let foodtypes = await db.Foodtypes.findAll(
@@ -10,28 +11,37 @@ let getHomepage = async (req, res) => {
                 // attributes: []
             }
         );
-        let homeOrder = await db.Orders.findOrCreate({
-            where: { status: true },
-            nest: true,
-            raw: true,
-        })
-        let contents = await db.Contents.findAll({
-            where: { orderId: homeOrder[0].id },
-            nest: true,
-        })
-        // console.log(homeOrder[0].id);
-        // console.log(JSON.stringify(foodtypes[0]));
-        // console.log(contents[0]);
         return res.render('homepage.ejs', {
             // foodLists: JSON.stringify(foodLists[0].Foods[0].id),
             foodtypes: foodtypes,
-            homeOrder: homeOrder[0],
-            contents: contents,
         });
     } catch (e) {
         console.log(e);
     }
 
+}
+
+let getStaffHome = async (req, res) => {
+    try {
+        let currentOrder = await db.Orders.findAll(
+            {
+                where: {
+                    paymentId: {
+                        [Op.not]: null,
+                    },
+                    status: true,
+                },
+                include: ['userOrder', 'Contents'],
+                nest: true,
+            }
+        );
+        // console.log(currentOrder);
+        return res.render('staffhomepage.ejs', {
+            currentOrder: currentOrder,
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 let getAboutPage = (req, res) => {
@@ -90,6 +100,7 @@ let deleteCRUD = async (req, res) => {
 
 module.exports = {
     getHomepage: getHomepage,
+    getStaffHome: getStaffHome,
     getAboutPage: getAboutPage,
     getCRUD: getCRUD,
     postCRUD: postCRUD,

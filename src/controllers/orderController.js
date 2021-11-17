@@ -1,4 +1,6 @@
 import db from '../models/index';
+const { Op } = require("sequelize");
+
 
 let addFoodToOrder = async (req, res) => {
     try {
@@ -9,7 +11,6 @@ let addFoodToOrder = async (req, res) => {
                 // attributes: []
             }
         );
-
         let data = req.body;
         try {
             await db.Contents.findOrCreate({
@@ -27,20 +28,16 @@ let addFoodToOrder = async (req, res) => {
             console.log(e);
         }
 
-        let homeOrder = await db.Orders.findOne({
-            where: { status: true },
-            nest: true,
-        })
         let contents = await db.Contents.findAll({
-            where: { orderId: homeOrder.id },
+            where: { orderId: data.orderId },
             nest: true,
         })
-
-        return res.render('homepage.ejs', {
-
+        return res.render('customerhomepage.ejs', {
             foodtypes: foodtypes,
-            homeOrder: homeOrder,
             contents: contents,
+            orderId: data.orderId,
+            userId: data.id,
+            firstName: data.firstName,
         });
     } catch (e) {
         console.log(e);
@@ -58,11 +55,11 @@ let deleteFoodFromOrder = async (req, res) => {
             }
         );
 
-        let id = req.query.id;
-        if (id) {
+        let data = req.body;
+        if (data) {
             try {
                 let food = await db.Contents.findOne({
-                    where: { id: id },
+                    where: { id: data.foodId },
                 })
                 if (food) {
                     food.destroy();
@@ -72,20 +69,53 @@ let deleteFoodFromOrder = async (req, res) => {
                 console.log(e);
             }
         }
-        let homeOrder = await db.Orders.findOne({
-            where: { status: true },
-            nest: true,
-        })
+
         let contents = await db.Contents.findAll({
-            where: { orderId: homeOrder.id },
+            where: { orderId: data.orderId },
             nest: true,
         })
-
-        return res.render('homepage.ejs', {
-
+        return res.render('customerhomepage.ejs', {
             foodtypes: foodtypes,
-            homeOrder: homeOrder,
             contents: contents,
+            orderId: data.orderId,
+            userId: data.id,
+            firstName: data.firstName,
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+let orderComplete = async (req, res) => {
+    try {
+        let data = req.body;
+        let order = await db.Orders.findOne({
+            where: { id: data.orderId }
+        });
+        if (order) {
+            order.status = false;
+            await order.save();
+        }
+        let user = await db.Users.findOne({
+            where: { id: data.userId }
+        })
+        let currentOrder = await db.Orders.findAll(
+            {
+                where: {
+                    paymentId: {
+                        [Op.not]: null,
+                    },
+                    status: true,
+                },
+                include: ['userOrder', 'Contents'],
+                nest: true,
+                // raw: true,
+            }
+        );
+        // console.log(currentOrder);
+        return res.render('staffhomepage.ejs', {
+            currentOrder: currentOrder,
+            user: user,
         });
     } catch (e) {
         console.log(e);
@@ -95,4 +125,5 @@ let deleteFoodFromOrder = async (req, res) => {
 module.exports = {
     addFoodToOrder: addFoodToOrder,
     deleteFoodFromOrder: deleteFoodFromOrder,
+    orderComplete: orderComplete,
 }
