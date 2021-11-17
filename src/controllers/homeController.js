@@ -47,9 +47,17 @@ let getRegister = (req, res) => {
 }
 
 let postCRUD = async (req, res) => {
-    let message = await CRUDService.createNewUser(req.body);
-    console.log(message);
-    return res.render('register_confirm.ejs');
+    let User = await db.Users.findOne({
+        where: { email: req.body.email },
+        raw: true
+    })
+    if (!User) {
+        let message = await CRUDService.createNewUser(req.body);
+        console.log(message);
+    }
+    return res.render('register_confirm.ejs',{
+        User: User,
+    });
 }
 
 let displayGetCRUD = async (req, res) => {
