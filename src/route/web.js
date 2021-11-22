@@ -27,10 +27,20 @@ let initWebRoutes = (app) => {
     router.post('/auth', userController.getAuthPage);
     router.get('/register', userController.getRegister);
     router.post('/register-confirm', userController.addNewCustomer);
+    router.post('/auth/adduser', userController.getAddUser);
+    router.post('/auth/adduser/adduser-confirm', userController.addNewUser);
+    router.post('/auth/edit-user', userController.getEditUser);
+    router.post('/auth/edit-user/put-user', userController.putUser);
+    router.post('/auth/addfood', userController.getAddFood);
+    router.post('/auth/addfood/addfood-confirm', userController.addNewFood);
+    router.post('/auth/edit-food', userController.getEditFood);
+    router.post('/auth/edit-food/put-food', userController.putFood);
+    router.post('/auth/delete-food', userController.deleteFood);
 
     //paymentController
     router.post('/auth/payment', paymentController.postPayment);
     router.post('/auth/payment/paymentcomplete', paymentController.paymentComplete);
+
 
     return app.use("/", router);
 }

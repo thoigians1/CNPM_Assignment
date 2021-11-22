@@ -1,0 +1,127 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm món</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .background_container {
+            background-color: #1178B3;
+        }
+
+        a {
+            cursor: pointer;
+        }
+
+        .text-color {
+            color: #ffffff;
+        }
+
+        .header_register {
+            font-weight: 300;
+            padding-top: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        .footer {
+            background-color: #1178B3;
+            margin-top: 4rem;
+            color: #ffffff;
+        }
+    </style>
+
+<body>
+
+    <header class="section-header">
+        <div class="background_container">
+
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-sm-6 col-4 mt-2 mb-2">
+                        <img src="https://cdn3.f-cdn.com/contestentries/1484825/33424121/5ca0940377bf4_thumb900.jpg"
+                            alt="logo" width="100" height="50">
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-8">
+                        <!-- <div class=" float-md-right row">
+                            <div class="">
+                                <a class="text-color col-2" href="/login">
+                                    <span> Đăng nhập </span>
+                                </a>
+                                |
+                                <a class="text-color col-8" href="/register">
+                                    <span> Đăng ký </span>
+                                </a>
+                            </div>
+
+                        </div> -->
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="container-fluid d-flex justify-content-center align-items-center container">
+        <div class="row">
+            <form action="/auth/addfood/addfood-confirm" method="POST">
+                <div class="form-row">
+                    <div class="col-12 mt-10 col-4 d-flex justify-content-center">
+                        <h2 class="header_register">Thêm món</h2>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Tên món</label>
+                    <input type="text" class="form-control" name="name" placeholder="Nhập tên món" required
+                        data-bv-notempty-message="Food name is required">
+                </div>
+                <div class="form-group">
+                    <label for="inputKmage">Link ảnh</label>
+                    <input type="text" class="form-control" name="image" placeholder="Nhập link ảnh"
+                        data-bv-notempty-message="Image link is required">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCost">Giá tiền</label>
+                        <input type="text" class="form-control" name="cost" required
+                            data-bv-notempty-message="The cost is required">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputType">Loại đồ ăn</label>
+                        <select name="type" class="form-control">
+                            <% for (let i=0; i < foodtypes.length; i++ ) { %>
+                                <option value="<%= foodtypes[i].id %>">
+                                    <%= foodtypes[i].name %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                </div>
+                <input type="text" name="email" value="<%= email %>" hidden>
+                <input type="text" name="password" value="<%= password %>" hidden>
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <span>
+        <%- include('footer.ejs') %>
+    </span>
+
+</html>

@@ -12,7 +12,23 @@ let getAuthPage = async (req, res) => {
   })
   if (User) {
     if (User.roleId == 'R1') {
-      res.send('adminhomepage.ejs')
+      let data = await db.Users.findAll({
+        raw: true,
+      });
+      let foodtypes = await db.Foodtypes.findAll({
+        include: ["Foods"],
+        nest: true,
+      });
+      if (data) {
+        return res.render('adminhomepage.ejs', {
+          dataTable: data,
+          user: User,
+          foodtypes: foodtypes
+        });
+      }
+      else {
+        console.log(data);
+      }
     }
     if (User.roleId == 'R2') {
       try {
@@ -111,12 +127,229 @@ let addNewCustomer = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+}
+
+let getAddUser = async (req, res) => {
+  return res.render('adduser.ejs', {
+    email: req.body.email,
+    password: req.body.password
+  });
+}
+
+let addNewUser = async (req, res) => {
+  let data = req.body;
+  try {
+    let user = await db.Users.findAll({
+      where: { email: data.email },
+      raw: true,
+    });
+    if (user.length) {
+      res.send('email đã tồn tại');
+    } else {
+      try {
+        await db.Users.create({
+          email: data.email,
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          phonenumber: data.phonenumber,
+          gender: data.gender === '1' ? true : false,
+          roleId: data.roleId
+        })
+      } catch (e) {
+        console.log(e);
+      }
+      return res.render('adduser_confirm.ejs', {
+        email: data.Aemail,
+        password: data.Apassword
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
 }
+
+let getEditUser = async (req, res) => {
+  let data = req.body;
+  let userId = data.id;
+  if (userId) {
+    let userData = await db.Users.findOne({
+      where: { id: userId },
+      raw: true
+    });
+
+    return res.render('edituser.ejs', {
+      user: userData,
+      email: data.email,
+      password: data.password
+    });
+  }
+  else {
+    return res.send('user not found!');
+  }
+}
+
+let putUser = async (req, res) => {
+  let data = req.body;
+  try {
+    let user = await db.Users.findOne({
+      where: { id: data.id }
+    })
+    if (user) {
+      user.firstName = data.firstName;
+      user.lastName = data.lastName;
+      user.address = data.address;
+      user.phonenumber = data.phonenumber;
+
+      await user.save();
+
+      return res.render('edituser_confirm.ejs', {
+        user: user,
+        email: data.Aemail,
+        password: data.Apassword
+      });
+
+    } else {
+      return res.send('user not found!');
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+let getAddFood = async (req, res) => {
+  let foodtypes = await db.Foodtypes.findAll({
+    raw: true,
+  })
+  return res.render('addfood.ejs', {
+    email: req.body.email,
+    password: req.body.password,
+    foodtypes: foodtypes
+  });
+}
+
+let addNewFood = async (req, res) => {
+  let data = req.body;
+  try {
+    let food = await db.Foods.findAll({
+      where: { name: data.name },
+      raw: true,
+    });
+    if (food.length) {
+      res.send('Món này đã tồn tại');
+    } else {
+      try {
+        // console.log(data);
+        await db.Foods.create({
+          name: data.name,
+          cost: data.cost,
+          image: data.image,
+          foodtypeId: data.type
+        })
+      } catch (e) {
+        console.log(e);
+      }
+      // console.log(data.email);
+      return res.render('addfood_confirm.ejs', {
+        email: data.email,
+        password: data.password,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+let getEditFood = async (req, res) => {
+  let foodtypes = await db.Foodtypes.findAll({
+    raw: true,
+  })
+  let data = req.body;
+  let foodId = data.foodId;
+  if (foodId) {
+    let foodData = await db.Foods.findOne({
+      where: { id: foodId },
+      raw: true
+    });
+
+    return res.render('editfood.ejs', {
+      food: foodData,
+      email: data.email,
+      password: data.password,
+      foodtypes: foodtypes
+    });
+  }
+  else {
+    return res.send('food not found!');
+  }
+}
+
+let putFood = async (req, res) => {
+  let data = req.body;
+  try {
+    let food = await db.Foods.findOne({
+      where: { id: data.id }
+    })
+    if (food) {
+      food.name = data.name;
+      food.image = data.image;
+      food.cost = data.cost;
+      food.foodtypeId = data.type;
+
+      await food.save();
+
+      return res.render('editfood_confirm.ejs', {
+        food: food,
+        email: data.email,
+        password: data.password,
+      });
+
+    } else {
+      return res.send('food not found!');
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+let deleteFood = async (req, res) => {
+  let data = req.body;
+  let foodId = data.foodId;
+  if (foodId) {
+    try {
+      let food = await db.Foods.findOne({
+        where: { id: foodId },
+      })
+      if (food) {
+        food.destroy();
+      }
+      return res.render('deletefood_confirm.ejs', {
+        food: food,
+        email: data.email,
+        password: data.password
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+
 
 module.exports = {
   getLoginPage: getLoginPage,
   getAuthPage: getAuthPage,
   getRegister: getRegister,
   addNewCustomer: addNewCustomer,
+  getAddUser: getAddUser,
+  addNewUser: addNewUser,
+  getAddFood: getAddFood,
+  addNewFood: addNewFood,
+  getEditFood: getEditFood,
+  putFood: putFood,
+  deleteFood: deleteFood,
+  getEditUser: getEditUser,
+  putUser: putUser,
 }

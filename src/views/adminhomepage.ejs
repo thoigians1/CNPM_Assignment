@@ -1,0 +1,203 @@
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .background_container {
+      background-color: #1178B3;
+    }
+
+    a {
+      cursor: pointer;
+    }
+
+    h6 {
+      font-size: 18px;
+    }
+
+    .text-color {
+      color: #ffffff;
+    }
+
+    table {
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #DDD;
+    }
+
+    tr:hover {
+      background-color: #D6EEEE;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="section-header mb-3">
+    <div class="background_container">
+
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-8 col-sm-6 col-4 mt-2 mb-2">
+            <img src="https://cdn3.f-cdn.com/contestentries/1484825/33424121/5ca0940377bf4_thumb900.jpg" alt="logo"
+              width="100" height="50">
+          </div>
+
+          <div class="col-lg-4 col-sm-6 col-8">
+            <div class=" float-md-right row">
+              <div class="">
+                <a class="text-color col-2">
+                  <span> Hi admin </span>
+                </a>
+                |
+                <a class="text-color col-8" href="/">
+                  <span> Đăng xuất </span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <form action="/auth/adduser" method="POST" class="col-sm-6">
+        <input type="text" name="email" value="<%= user.email %>" hidden>
+        <input type="text" name="password" value="<%= user.password%>" hidden>
+        <button class="btn btn-primary">Add User</button>
+      </form>
+    </div>
+  </div><br>
+
+  <table>
+    <tr>
+      <th>Email</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Address</th>
+      <th>Phonenumber</th>
+      <th>RoleId</th>
+      <th>Actions</th>
+    </tr>
+
+    <% for(let i=0; i < dataTable.length; i++) { %>
+      <tr>
+        <td>
+          <%= dataTable[i].email %>
+        </td>
+        <td>
+          <%= dataTable[i].firstName %>
+        </td>
+        <td>
+          <%= dataTable[i].lastName %>
+        </td>
+        <td>
+          <%= dataTable[i].address %>
+        </td>
+        <td>
+          <%= dataTable[i].phonenumber %>
+        </td>
+        <td>
+          <% if(dataTable[i].roleId=='R1' ) { %>
+            Admin
+            <% } %>
+              <% if(dataTable[i].roleId=='R2' ) { %>
+                Staff
+                <% } %>
+                  <% if(dataTable[i].roleId=='R3' ) { %>
+                    Customer
+                    <% } %>
+        </td>
+        <td>
+          <form action="/auth/edit-user" method="POST" style="display: inline-block;">
+            <input type="text" name="email" value="<%= user.email %>" hidden>
+            <input type="text" name="password" value="<%= user.password%>" hidden>
+            <input type="text" name="id" value="<%= dataTable[i].id %>" hidden>
+            <button class="btn btn-link">Edit</button>
+          </form>
+        </td>
+
+      </tr>
+      <% } %>
+  </table><br><br>
+
+  <div class="container">
+    <div class="row">
+      <form action="/auth/addfood" method="POST" class="col-sm-6">
+        <input type="text" name="email" value="<%= user.email %>" hidden>
+        <input type="text" name="password" value="<%= user.password%>" hidden>
+        <button class="btn btn-primary">Add food</button>
+      </form>
+
+    </div>
+  </div><br>
+
+  <table>
+    <tr>
+      <th>Type</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+
+    <% for(let i=0; i < foodtypes.length; i++) { %>
+      <% for (let j=0; j < foodtypes[i].Foods.length; j++ ) { %>
+        <tr>
+          <td>
+            <%= foodtypes[i].name %>
+          </td>
+          <td>
+            <%= foodtypes[i].Foods[j].name %>
+          </td>
+          <td>
+            <%= foodtypes[i].Foods[j].cost %>
+          </td>
+          <td>
+            <form action="/auth/edit-food" method="POST" style="display: inline-block;">
+              <input type="text" name="email" value="<%= user.email %>" hidden>
+              <input type="text" name="password" value="<%= user.password%>" hidden>
+              <input type="text" name="foodId" value="<%= foodtypes[i].Foods[j].id%>" hidden>
+              <button class="btn btn-link">Edit</button>
+            </form>
+            |
+            <form action="/auth/delete-food" method="POST" style="display: inline-block;">
+              <input type="text" name="email" value="<%= user.email %>" hidden>
+              <input type="text" name="password" value="<%= user.password%>" hidden>
+              <input type="text" name="foodId" value="<%= foodtypes[i].Foods[j].id%>" hidden>
+              <button class="btn btn-link text-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% } %>
+          <% } %>
+  </table>
+</body>
+
+</html>
