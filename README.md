@@ -8,4 +8,4 @@ npm install
 npm start
 
 After cloning project, you should go through #1, #2
-Enter: "localhost:3000/api" to test the connection
+Enter: "localhost:8080/api" to test the connection
