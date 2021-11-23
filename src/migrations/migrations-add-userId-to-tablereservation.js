@@ -1,19 +1,19 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.addColumn('Users', 'tableId',
+        await queryInterface.addColumn('TableReservations', 'userId',
             {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 onUpdate: 'CASCADE',
                 references: {
-                    model: 'Tables',
+                    model: 'Users',
                     key: 'id',
                 },
             });
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeColumn('Users', 'tableId');
+        await queryInterface.removeColumn('TableReservations', 'userId');
     },
 };

@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Orders, {
         foreignKey: 'userId',
       });
-      Users.belongsTo(models.Tables, {
-        foreignKey: 'tableId',
+      Users.hasMany(models.TableReservations, {
+        foreignKey: 'userId',
       });
     }
   };

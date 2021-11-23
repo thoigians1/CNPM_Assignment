@@ -1,12 +1,21 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Tables', {
+        await queryInterface.createTable('TableReservations', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
+            },
+            tableId: {
+                type: Sequelize.INTEGER
+            },
+            timeStart: {
+                type: Sequelize.STRING
+            },
+            timeEnd: {
+                type: Sequelize.STRING
             },
             status: {
                 type: Sequelize.BOOLEAN
@@ -22,6 +31,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Tables');
+        await queryInterface.dropTable('TableReservations');
     }
 };

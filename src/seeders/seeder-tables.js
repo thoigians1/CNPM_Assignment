@@ -4,22 +4,42 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert('Tables', [
             {
-                status: false,
+                status: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                status: false,
+                status: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                status: false,
+                status: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                status: false,
+                status: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                status: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                status: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                status: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                status: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
