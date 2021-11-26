@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             TableReservations.belongsTo(models.Users, {
-                as: 'UserTables'
+                foreignKey: 'userId',
+                as: 'UserTables',
             })
         }
     };

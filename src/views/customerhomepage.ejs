@@ -50,17 +50,41 @@
             right: 0;
             bottom: -10000;
             background: rgba(0, 0, 0, 0.4);
-
             display: none;
+        }
+
+        .s-food-item {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.4);
+            /* width: 50%; */
+            /* margin: 0 auto; */
+            display: none;
+        }
+
+        .c-food-item {
+            background-color: white;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
         }
 
         .open {
             display: block;
         }
 
-        nav.loingu {
+        nav.foodtype-nav {
             display: block;
-
+            padding: 0;
+            /* position: fixed; */
+            /* top: 66; */
+            /* z-index: 1; */
         }
 
         .typefood-options {
@@ -104,6 +128,7 @@
                         <img src="https://cdn3.f-cdn.com/contestentries/1484825/33424121/5ca0940377bf4_thumb900.jpg"
                             alt="logo" width="100" height="50">
                     </div>
+
                     <!-- <div class="col-lg-6 col-sm-9">
 
                         <form action="#" class="search ">
@@ -141,9 +166,19 @@
 
         </div>
     </header>
+    <div class="row">
+        <div class="mt-4 col-xl-3 col-lg-12 col-12">
+            <form action="/auth/reservetable" method="post">
+                <input type="number" name="id" value="<%=userId%>" hidden>
+                <button class="mb-2 btn btn-primary btn-block">
+                    <h5>ĐẶT BÀN</h5>
+                </button>
+            </form>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row">
-            <nav class="loingu col-xl-2 col-lg-12 col-12 mt-xl-4" style="padding: 0;">
+            <nav class="foodtype-nav col-xl-2 col-lg-12 col-12 mt-xl-3">
                 <ul class="typefood-options">
                     <% for (let i=0; i < foodtypes.length; i++ ) { %>
                         <li class="typefood-item">
@@ -155,7 +190,6 @@
                         <% } %>
                 </ul>
             </nav>
-
             <div class="container col-xl-10 col-lg-12 col-12">
                 <% for (let i=0; i < foodtypes.length; i++ ) { %>
                     <div id="<%= foodtypes[i].id %>" class="row m-3">
@@ -164,7 +198,7 @@
                         </h3>
 
                         <% for (let j=0; j < foodtypes[i].Foods.length; j++ ) { %>
-                            <div class="col-md-3 mb-3 container">
+                            <div class="col-md-3 mb-3 container no-gutters">
                                 <div class="food-item">
                                     <div class="m-2">
                                         <img src="<%= foodtypes[i].Foods[j].image %>" alt="a" style="width: 100%;">
@@ -172,10 +206,10 @@
                                             <%= foodtypes[i].Foods[j].name %>
                                         </h6>
                                         <div class="row">
-                                            <h5 class="col-12">
+                                            <h5 class="col-8">
                                                 <%= foodtypes[i].Foods[j].cost %>
                                             </h5>
-                                            <div class="col-10 ml-3 mt-2 mb-2">
+                                            <div class="col-2">
                                                 <form action="/auth/add-foods-to-order" method="POST" class="row">
                                                     <input type="number" name="id" value="<%= userId %>" hidden>
                                                     <input type="text" name="firstName" value="<%= firstName %>" hidden>
@@ -185,16 +219,84 @@
                                                         value="<%= foodtypes[i].Foods[j].name %>" hidden>
                                                     <input type="text" name="image"
                                                         value="<%= foodtypes[i].Foods[j].image %>" hidden>
-                                                    <input type="number" name="quantity" value="1" min="1"
-                                                        class="col-6">
+                                                    <input type="number" name="quantity" value="1" min="1" hidden>
                                                     <input type="number" name="cost"
                                                         value="<%= foodtypes[i].Foods[j].cost %>" hidden>
                                                     <input type="number" name="orderId" value="<%= orderId%>" hidden>
-                                                    <button type="submit" class="col-6"
+                                                    <button type="submit" class="js-add"
                                                         style="border: none; background-color: #ffffff;">
                                                         <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
                                                     </button>
                                                 </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="s-food-item js-food-item">
+                                    <div class="c-food-item border border-light rounded">
+                                        <div class="row m-0">
+                                            <div class="col-12 row bg-light p-2 m-0">
+                                                <div class="col-8 col-sm-10">
+                                                    <h5>ADD TO CART</h5>
+                                                </div>
+                                                <div class="col-4 col-sm-2">
+                                                    <button class="btn btn-danger js-close-food-item">close</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-md-6">
+                                                <img src="<%= foodtypes[i].Foods[j].image %>" alt="a"
+                                                    style="width: 100%;">
+                                            </div>
+                                            <div class="col-xl-8 col-md-6 row m-0 mt-sm-0 mt-3">
+                                                <div class="col-8">
+                                                    <h6>
+                                                        <%=foodtypes[i].name %>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h6>
+                                                        price
+                                                    </h6>
+                                                </div>
+                                                <div class="col-8">
+                                                    <h6>
+                                                        <%=foodtypes[i].Foods[j].name %>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h6>
+                                                        <%=foodtypes[i].Foods[j].cost %>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-12 mt-sm-5 mt-3">
+                                                    <form action="/auth/add-foods-to-order" method="POST" class="row">
+                                                        <div class="col-4">
+                                                            <h6>Quantity</h6>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <input type="number" name="id" value="<%= userId %>" hidden>
+                                                            <input type="text" name="firstName" value="<%= firstName %>"
+                                                                hidden>
+                                                            <input type="number" name="foodId"
+                                                                value="<%= foodtypes[i].Foods[j].id %>" hidden>
+                                                            <input type="text" name="name"
+                                                                value="<%= foodtypes[i].Foods[j].name %>" hidden>
+                                                            <input type="text" name="image"
+                                                                value="<%= foodtypes[i].Foods[j].image %>" hidden>
+                                                            <input type="number" name="quantity" value="1" min="1"
+                                                                class="float-right" style="width: 100%;">
+                                                            <input type="number" name="cost"
+                                                                value="<%= foodtypes[i].Foods[j].cost %>" hidden>
+                                                            <input type="number" name="orderId" value="<%= orderId%>"
+                                                                hidden>
+                                                        </div>
+                                                        <button type="submit"
+                                                            class="col-12 btn btn-primary btn-block mt-sm-5 mt-3">
+                                                            <i class="fas fa-shopping-cart"
+                                                                style="font-size: 1.5rem;"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -273,6 +375,7 @@
 
             </div>
         </div>
+
     </div>
     <span>
         <%- include('footer.ejs') %>
@@ -309,6 +412,22 @@
             cart.classList.remove('open');
         }
 
+    </script>
+    <script>
+
+        $('.food-item:not(.food-click)').on('click', function () {
+            $(".food-click").removeClass("food-click");
+            $(this).addClass('food-click')
+            document.querySelector('.food-click + .js-food-item').classList.add('open')
+        })
+        // js-close-food-item
+        $('.js-close-food-item').on('click', function () {
+            document.querySelector('.food-click + .js-food-item').classList.remove('open')
+        })
+
+        $('.js-add').on('click', function () {
+            event.stopPropagation();
+        })
     </script>
 
 </body>

@@ -336,6 +336,86 @@ let deleteFood = async (req, res) => {
   }
 }
 
+// ------------- UPDATE 25/11 -------------- //
+let getReserveTable = async (req, res) => {
+  let data = req.body;
+  let reservation = await db.TableReservations.findAll({
+    raw: true,
+  });
+  let user = await db.Users.findOne({
+    where: { id: data.id },
+    raw: true
+  })
+  let tables = await db.Tables.findAll({
+    where: { status: true },
+    raw: true
+  })
+  return res.render('reservetable.ejs', {
+    phonenumber: user.phonenumber,
+    firstName: user.firstName,
+    email: user.email,
+    password: user.password,
+    tables: tables,
+    reservation: reservation,
+  });
+}
+
+let reserveTable = async (req, res) => {
+  let data = req.body;
+  try {
+    let reservation = await db.TableReservations.findAll({
+      where: { tableId: data.tableId },
+      raw: true,
+    });
+    // console.log(reservation)
+    let flag = true;
+    if (reservation.length) {
+      for (let i = 0; i < reservation.length; i++) {
+        if (!(reservation[i].timeEnd < data.timeStart || reservation[i].timeStart > data.timeEnd)) {
+          res.send('Bàn này đã được đặt trong khung giờ của quý khách! Xin quý khách vui lòng xem bảng bên dưới form đặt bàn!')
+          flag = false;
+        }
+      }
+      if (flag) {
+        try {
+          // console.log(data);
+          await db.TableReservations.create({
+            tableId: data.tableId,
+            timeStart: data.timeStart,
+            timeEnd: data.timeEnd,
+            status: 1,
+          })
+        } catch (e) {
+          console.log(e);
+        }
+        // console.log(data.email);
+        return res.render('reservetable_confirm.ejs', {
+          email: data.email,
+          password: data.password,
+        });
+      }
+    } else {
+      try {
+        // console.log(data);
+        await db.TableReservations.create({
+          tableId: data.tableId,
+          timeStart: data.timeStart,
+          timeEnd: data.timeEnd,
+          status: 1,
+        })
+      } catch (e) {
+        console.log(e);
+      }
+      // console.log(data.email);
+      return res.render('reservetable_confirm.ejs', {
+        email: data.email,
+        password: data.password,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 
 module.exports = {
@@ -352,4 +432,6 @@ module.exports = {
   deleteFood: deleteFood,
   getEditUser: getEditUser,
   putUser: putUser,
+  getReserveTable: getReserveTable,
+  reserveTable: reserveTable,
 }

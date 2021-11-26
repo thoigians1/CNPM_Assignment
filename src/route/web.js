@@ -8,14 +8,6 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
     router.get('/', homeController.getHomepage);
-    router.get('/about', homeController.getAboutPage);
-    router.get('/crud', homeController.getCRUD);
-
-    router.post('/post-crud', homeController.postCRUD);
-    router.get('/get-crud', homeController.displayGetCRUD);
-    router.get('/edit-crud', homeController.getEditCRUD);
-    router.post('/put-crud', homeController.putCRUD);
-    router.get('/delete-crud', homeController.deleteCRUD);
 
     //ordercontroller
     router.post('/auth/add-foods-to-order', orderController.addFoodToOrder);
@@ -36,6 +28,10 @@ let initWebRoutes = (app) => {
     router.post('/auth/edit-food', userController.getEditFood);
     router.post('/auth/edit-food/put-food', userController.putFood);
     router.post('/auth/delete-food', userController.deleteFood);
+    // ---------- UPDATE 25/11 ------------ //
+    router.post('/auth/reservetable', userController.getReserveTable);
+    router.post('/auth/reservetable/reservetable-confirm', userController.reserveTable);
+
 
     //paymentController
     router.post('/auth/payment', paymentController.postPayment);
