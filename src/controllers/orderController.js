@@ -122,8 +122,36 @@ let orderComplete = async (req, res) => {
     }
 }
 
+let showOrders = async (req, res) => {
+    try {
+        let data = req.body;
+        let orders = await db.Orders.findAll(
+            {
+                where: {
+                    paymentId: {
+                        [Op.not]: null,
+                    },
+                    status: false,
+                },
+                include: ['userOrder', 'Contents'],
+                nest: true,
+                // raw: true,
+            }
+        );
+        return res.render('order.ejs', {
+            orders: orders,
+            email: data.email,
+            password: data.password,
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+}
+
 module.exports = {
     addFoodToOrder: addFoodToOrder,
     deleteFoodFromOrder: deleteFoodFromOrder,
     orderComplete: orderComplete,
+    showOrders: showOrders,
 }

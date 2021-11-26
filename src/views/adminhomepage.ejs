@@ -85,7 +85,13 @@
 
     </div>
   </header>
-
+  <div class="row">
+    <form action="/auth/order" method="POST" class="col-sm-6">
+      <input type="text" name="email" value="<%= user.email %>" hidden>
+      <input type="text" name="password" value="<%= user.password%>" hidden>
+      <button class="btn btn-primary">Quản lý đơn hàng</button>
+    </form>
+  </div>
   <div class="container">
     <div class="row">
       <form action="/auth/adduser" method="POST" class="col-sm-6">

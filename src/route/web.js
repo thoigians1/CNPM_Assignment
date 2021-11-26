@@ -13,6 +13,8 @@ let initWebRoutes = (app) => {
     router.post('/auth/add-foods-to-order', orderController.addFoodToOrder);
     router.post('/auth/delete-food-from-order', orderController.deleteFoodFromOrder);
     router.post('/auth/set-status-order', orderController.orderComplete)
+    router.post('/auth/order', orderController.showOrders)
+
 
     // userController
     router.get('/login', userController.getLoginPage);
