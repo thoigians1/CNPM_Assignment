@@ -3,11 +3,17 @@ import homeController from "../controllers/homeController";
 import orderController from "../controllers/orderController";
 import userController from "../controllers/userController";
 import paymentController from "../controllers/paymentController";
+import foodController from "../controllers/foodController";
+import tablereservationController from "../controllers/tablereservationController"
 
 let router = express.Router();
 
 let initWebRoutes = (app) => {
+
+    //homeController
     router.get('/', homeController.getHomepage);
+    router.get('/login', homeController.getLoginPage);
+    router.get('/register', homeController.getRegister);
 
     //ordercontroller
     router.post('/auth/add-foods-to-order', orderController.addFoodToOrder);
@@ -17,23 +23,24 @@ let initWebRoutes = (app) => {
 
 
     // userController
-    router.get('/login', userController.getLoginPage);
     router.post('/auth', userController.getAuthPage);
-    router.get('/register', userController.getRegister);
     router.post('/register-confirm', userController.addNewCustomer);
     router.post('/auth/adduser', userController.getAddUser);
     router.post('/auth/adduser/adduser-confirm', userController.addNewUser);
     router.post('/auth/edit-user', userController.getEditUser);
     router.post('/auth/edit-user/put-user', userController.putUser);
-    router.post('/auth/addfood', userController.getAddFood);
-    router.post('/auth/addfood/addfood-confirm', userController.addNewFood);
-    router.post('/auth/edit-food', userController.getEditFood);
-    router.post('/auth/edit-food/put-food', userController.putFood);
-    router.post('/auth/delete-food', userController.deleteFood);
-    // ---------- UPDATE 25/11 ------------ //
-    router.post('/auth/reservetable', userController.getReserveTable);
-    router.post('/auth/reservetable/reservetable-confirm', userController.reserveTable);
-    router.post('/auth/set-status-tablereservations', userController.setReserveTable);
+
+    //foodController
+    router.post('/auth/addfood', foodController.getAddFood);
+    router.post('/auth/addfood/addfood-confirm', foodController.addNewFood);
+    router.post('/auth/edit-food', foodController.getEditFood);
+    router.post('/auth/edit-food/put-food', foodController.putFood);
+    router.post('/auth/delete-food', foodController.deleteFood);
+
+    // tablereservationController
+    router.post('/auth/reservetable', tablereservationController.getReserveTable);
+    router.post('/auth/reservetable/reservetable-confirm', tablereservationController.reserveTable);
+    router.post('/auth/set-status-tablereservations', tablereservationController.setReserveTable);
 
     //paymentController
     router.post('/auth/payment', paymentController.postPayment);

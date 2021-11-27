@@ -112,10 +112,21 @@ let orderComplete = async (req, res) => {
                 // raw: true,
             }
         );
+        let currentReservations = await db.TableReservations.findAll(
+            {
+                where: {
+                    status: true,
+                },
+                include: ['UserTables'],
+                nest: true,
+                raw: true,
+            }
+        );
         // console.log(currentOrder);
         return res.render('staffhomepage.ejs', {
             currentOrder: currentOrder,
             user: user,
+            currentReservations: currentReservations,
         });
     } catch (e) {
         console.log(e);

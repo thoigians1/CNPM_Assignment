@@ -20,9 +20,21 @@ let getHomepage = async (req, res) => {
 
 }
 
+let getLoginPage = (req, res) => {
+    return res.render('loginpage.ejs');
+}
+
+let getRegister = async (req, res) => {
+    return res.render('register.ejs');
+}
+
 
 
 
 module.exports = {
     getHomepage: getHomepage,
+    getLoginPage: getLoginPage,
+    getRegister: getRegister,
+
+
 }
