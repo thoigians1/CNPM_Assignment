@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     TableReservations.init({
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         tableId: DataTypes.INTEGER,
         timeStart: DataTypes.STRING,
         timeEnd: DataTypes.STRING,

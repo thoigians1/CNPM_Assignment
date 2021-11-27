@@ -118,6 +118,54 @@
                     </tr>
                     <% } %>
             </tbody>
+        </table><br>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Table No</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Time start</th>
+                    <th>Time end</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < currentReservations.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= currentReservations[i].tableId %>
+                        </td>
+                        <td>
+                            <%= currentReservations[i].UserTables.lastName %>
+                                <%= currentReservations[i].UserTables.firstName %>
+                        </td>
+                        <td>
+                            <%= currentReservations[i].UserTables.Email %>
+                        </td>
+                        <td>
+                            <%= currentReservations[i].UserTables.phonenumber %>
+                        </td>
+                        <td>
+                            <%= currentReservations[i].timeStart %>
+                        </td>
+                        <td>
+                            <%= currentReservations[i].timeEnd %>
+                        </td>
+                        <td>
+                            <form action="/auth/set-status-tablereservations" method="POST">
+                                <input type="number" name="userId" value="<%= user.id %>" hidden>
+                                <input type="number" name="reserveID" value="<%= currentReservations[i].id %>" hidden>
+                                <button type="submit" class="btn">
+                                    <i class="far fa-check-square" style="font-size: 30px;"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
         </table>
         <form action="/auth" method="POST">
             <input type="text" name="email" value="<%= user.email %>" hidden>
@@ -126,7 +174,9 @@
                 Tải lại
             </button>
         </form>
-    </div>
+    </div><br>
+
+    
 </body>
 
 </html>

@@ -44,10 +44,21 @@ let getAuthPage = async (req, res) => {
             nest: true,
           }
         );
+        let currentReservations = await db.TableReservations.findAll(
+          {
+            where: {
+              status: true,
+            },
+            include: ['UserTables'],
+            nest: true,
+            raw: true,
+          }
+        );
         // console.log(currentOrder);
         return res.render('staffhomepage.ejs', {
           currentOrder: currentOrder,
           user: User,
+          currentReservations: currentReservations,
         });
       } catch (e) {
         console.log(e);
@@ -417,6 +428,52 @@ let reserveTable = async (req, res) => {
   }
 }
 
+let setReserveTable = async (req,res) => {
+  try {
+    let data = req.body;
+    let reservation = await db.TableReservations.findOne({
+        where: { id: data.reserveID }
+    });
+    if (reservation) {
+        reservation.status = false;
+        await reservation.save();
+    }
+    let user = await db.Users.findOne({
+        where: { id: data.userId }
+    })
+    let currentOrder = await db.Orders.findAll(
+        {
+            where: {
+                paymentId: {
+                    [Op.not]: null,
+                },
+                status: true,
+            },
+            include: ['userOrder', 'Contents'],
+            nest: true,
+            // raw: true,
+        }
+    );
+    let currentReservations = await db.TableReservations.findAll(
+      {
+        where: {
+          status: true,
+        },
+        include: ['UserTables'],
+        nest: true,
+        raw: true,
+      }
+    );
+    // console.log(currentOrder);
+    return res.render('staffhomepage.ejs', {
+        currentOrder: currentOrder,
+        user: user,
+        currentReservations: currentReservations,
+    });
+  } catch (e) {
+    console.log(e);
+}
+}
 
 module.exports = {
   getLoginPage: getLoginPage,
@@ -434,4 +491,5 @@ module.exports = {
   putUser: putUser,
   getReserveTable: getReserveTable,
   reserveTable: reserveTable,
+  setReserveTable: setReserveTable,
 }

@@ -33,7 +33,7 @@ let initWebRoutes = (app) => {
     // ---------- UPDATE 25/11 ------------ //
     router.post('/auth/reservetable', userController.getReserveTable);
     router.post('/auth/reservetable/reservetable-confirm', userController.reserveTable);
-
+    router.post('/auth/set-status-tablereservations', userController.setReserveTable);
 
     //paymentController
     router.post('/auth/payment', paymentController.postPayment);
