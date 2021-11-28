@@ -30,6 +30,51 @@ let app = express();
 //     next();
 // });
 
+//---socketio---socketio
+
+const http = require('http');
+const socketio = require('socket.io');
+const server = http.createServer(app);
+const io = socketio(server);
+
+const { generateMessage, generateLocationMessage } = require('./utils/messages')
+
+
+io.on('connection', (socket) => {
+    console.log("connected!");
+    
+    socket.on('join', ({username, room}) => {
+        socket.join(room)
+
+        socket.emit('message', generateMessage(`Welcome ${username}!`, username));
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined!`));
+        //io.to.emit, socket.broadcast.to.emit
+    })
+
+    socket.on("sendMessage", (msg, username, callback) => {
+        // const filter = new Filter();
+
+        // if (filter.isProfane(msg)) {
+        //     return callback("Profanity is not allowed!");
+        // }
+
+        io.emit("message", generateMessage(msg, username));
+        console.log(`msg sent to ${username}`)
+        callback();
+    });
+
+    socket.on('disconnect', () => {
+        io.emit('message', generateMessage("A user has left!"))
+    })
+
+    socket.on('sendLocation', (location, username, callback) => {
+        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${location.latitude},${location.longtitude}`, username));
+        callback();
+    })
+})
+
+//
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -41,8 +86,13 @@ connectDB();
 let port = process.env.PORT || 6969;
 //PORT === undefined => 6969
 
-app.listen(port, () => {
+server.listen(port, () => {
     //callback
     console.log("Backend listening on port " + port);
 })
+
+// app.listen(port, () => {
+//     //callback
+//     console.log("Backend listening on port " + port);
+// })
 

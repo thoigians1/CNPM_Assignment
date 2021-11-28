@@ -64,19 +64,20 @@
                 <div class="mb-3 text-center">
                     <h3>Đăng nhập</h3>
                 </div>
-                <form action="/auth" class="shadow p-4" method="POST">
+                <form action="/auth" class="shadow p-4" method="POST" id="login-form">
                     <div class="mb-3">
-                        <input type="text" name="email" class="form-control" placeholder="Email" required>
+                        <input type="text" name="email" id="email" class="form-control" placeholder="Email" required>
                     </div>
 
                     <div class="mb-3">
-                        <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Mật khẩu"
+                            required>
                     </div>
 
                     <a class="float-end text-decoration-none">Quên mật khẩu?</a>
 
                     <div class="mb-3">
-                        <button type="submit" name="login" class="btn btn-primary">Đăng nhập</button>
+                        <button type="submit" name="login" class="btn btn-primary" id="submit-btn">Đăng nhập</button>
                     </div>
 
                     <hr>
@@ -100,6 +101,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
+    <!-- Link thư viện jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $loginForm = $('#login-form');
+        $submitBtn = $('#submit-btn');
+        $submitBtn.on('click', (event) => {
+            event.preventDefault();
+            $.ajax({
+                url: "/auth/signin",
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                }),
+                success: (data) => {
+                    console.log('success', data);
+                },
+                error: function (jqXHR, error, errorThrown) {
+                    console.log(error);
+                },
+            })
+            $loginForm.submit();
+        })
+    </script>
 </body>
 
 </html>

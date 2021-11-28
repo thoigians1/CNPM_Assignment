@@ -5,6 +5,7 @@ import userController from "../controllers/userController";
 import paymentController from "../controllers/paymentController";
 import foodController from "../controllers/foodController";
 import tablereservationController from "../controllers/tablereservationController"
+import { signIn, loginRequired, userAuthen } from '../api/auth';
 
 let router = express.Router();
 
@@ -14,8 +15,14 @@ let initWebRoutes = (app) => {
     router.get('/', homeController.getHomepage);
     router.get('/login', homeController.getLoginPage);
     router.get('/register', homeController.getRegister);
+    router.post('/register-confirm', userController.addNewCustomer);
 
     //ordercontroller
+    router.route('/auth/signin').post(signIn);
+
+    router.use(userAuthen);
+    router.use(loginRequired);
+    
     router.post('/auth/add-foods-to-order', orderController.addFoodToOrder);
     router.post('/auth/delete-food-from-order', orderController.deleteFoodFromOrder);
     router.post('/auth/set-status-order', orderController.orderComplete)
@@ -24,7 +31,6 @@ let initWebRoutes = (app) => {
 
     // userController
     router.post('/auth', userController.getAuthPage);
-    router.post('/register-confirm', userController.addNewCustomer);
     router.post('/auth/adduser', userController.getAddUser);
     router.post('/auth/adduser/adduser-confirm', userController.addNewUser);
     router.post('/auth/edit-user', userController.getEditUser);
@@ -45,7 +51,6 @@ let initWebRoutes = (app) => {
     //paymentController
     router.post('/auth/payment', paymentController.postPayment);
     router.post('/auth/payment/paymentcomplete', paymentController.paymentComplete);
-
 
     return app.use("/", router);
 }

@@ -146,6 +146,7 @@
                     <div class="col-lg-4 col-sm-6 col-8">
                         <div class=" float-md-right row">
                             <div class="">
+                                <div style="display:none" id="username"><%= firstName %></div>
                                 <a class="text-color col-2">
                                     <span> Hi, <%= firstName %> </span>
                                 </a>
@@ -175,6 +176,9 @@
                 </button>
             </form>
         </div>
+    </div>
+    <div class="row">
+        <%- include('chat.ejs') %>
     </div>
     <div class="container-fluid">
         <div class="row">

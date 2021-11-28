@@ -156,39 +156,48 @@
                 </ul>
             </nav>
 
-            <div class="container col-xl-10 col-lg-12 col-12">
-                <% for (let i=0; i < foodtypes.length; i++ ) { %>
-                    <div id="<%= foodtypes[i].id %>" class="row m-3">
-                        <h3 class="col-12 mb-4">
-                            <%= foodtypes[i].name %>
-                        </h3>
+            <div class="container col-xl-10 col-lg-12 col-12" style="margin-top: 10px;">
+                <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        id="searchInput" aria-describedby="search-addon" value=<%=search %>> </input>
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+                <div id="div-foods">
+                    <% for (let i=0; i < foodtypes.length; i++ ) { %>
+                        <div id="<%= foodtypes[i].id %>" class="row m-3">
+                            <h3 class="col-12 mb-4">
+                                <%= foodtypes[i].name %>
+                            </h3>
 
-                        <% for (let j=0; j < foodtypes[i].Foods.length; j++ ) { %>
-                            <div class="col-md-3 mb-3 container no-gutters">
-                                <div class="food-item">
-                                    <div class="m-2">
-                                        <img src="<%= foodtypes[i].Foods[j].image %>" alt="a" style="width: 100%;">
-                                        <h6 style="width: 100%; height: 50px;" class="row-cols-12">
-                                            <%= foodtypes[i].Foods[j].name %>
-                                        </h6>
-                                        <div class="row">
-                                            <h5 class="col-7">
-                                                <%= foodtypes[i].Foods[j].cost %>
-                                            </h5>
-                                            <div class="col-2 float-right">
-                                                <a class="col-6" href="/login"
-                                                    style="border: none; background-color: #ffffff; color: black;">
-                                                    <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
-                                                </a>
+                            <% for (let j=0; j < foodtypes[i].Foods.length; j++ ) { %>
+                                <div class="col-md-3 mb-3 container no-gutters">
+                                    <div class="food-item">
+                                        <div class="m-2">
+                                            <img src="<%= foodtypes[i].Foods[j].image %>" alt="a" style="width: 100%;">
+                                            <h6 style="width: 100%; height: 50px;" class="row-cols-12">
+                                                <%= foodtypes[i].Foods[j].name %>
+                                            </h6>
+                                            <div class="row">
+                                                <h5 class="col-7">
+                                                    <%= foodtypes[i].Foods[j].cost %>
+                                                </h5>
+                                                <div class="col-2 float-right">
+                                                    <a class="col-6" href="/login"
+                                                        style="border: none; background-color: #ffffff; color: black;">
+                                                        <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <% } %>
-                    </div>
-                    <% } %>
+                                <% } %>
+                        </div>
+                        <% } %>
+                </div>
             </div>
         </div>
     </div>
@@ -214,6 +223,71 @@
         });
     </script>
 
+    <script>
+        //setup before functions
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 500;  //time in ms
+        var $input = $('#searchInput');
+
+        //on keyup, start the countdown
+        $input.on('keyup', function () {
+            // if (!this.value) {
+            //     alert('The box is empty');
+            // }
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown 
+        $input.on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+
+        //user is "finished typing," do something
+        function doneTyping() {
+            //do something
+            const keywords = $input.val();
+            $.ajax({
+                url: "/",
+                data: jQuery.param({
+                    keywords: keywords
+                }),
+                type: 'GET',
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: (data) => {
+                    console.log(data);
+                    $('body').html(data);
+                },
+                error: function (jqXHR, error, errorThrown) {
+                    //display error
+                    console.log('success');
+                    console.log(error);
+                },
+            })
+        }
+
+        $input.on('change keyup copy paste cut', function () {
+            if (!this.value) {
+                $.ajax({
+                    url: "/",
+                    type: 'GET',
+                    // contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: (data) => {
+                        console.log(data);
+                        $('body').html(data);
+                    },
+                    error: function (jqXHR, error, errorThrown) {
+                        //display error
+                        console.log(error);
+                    },
+                })
+            }
+
+            console.log(`this.value ${this.value}`)
+        });
+    </script>
 </body>
 
 </html>
