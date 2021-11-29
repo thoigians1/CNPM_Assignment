@@ -5,6 +5,7 @@ import userController from "../controllers/userController";
 import paymentController from "../controllers/paymentController";
 import foodController from "../controllers/foodController";
 import tablereservationController from "../controllers/tablereservationController"
+import searchController from "../api/searchController";
 import { signIn, loginRequired, userAuthen } from '../api/auth';
 
 let router = express.Router();
@@ -16,6 +17,9 @@ let initWebRoutes = (app) => {
     router.get('/login', homeController.getLoginPage);
     router.get('/register', homeController.getRegister);
     router.post('/register-confirm', userController.addNewCustomer);
+
+    //paymentQRComplete
+    router.get('/payment/complete', paymentController.paymentQRComplete);
 
     //ordercontroller
     router.route('/auth/signin').post(signIn);

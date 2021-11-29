@@ -39,7 +39,7 @@
                 </li>
             </ul>
 
-            <div class="table-content p-3">
+            <div class="tab-content p-3">
                 <div class="tab-pane fade show active" id="nav-tab-card">
                     <form action="/auth/payment/paymentcomplete" method="POST">
                         <div class="form-group">
@@ -91,6 +91,9 @@
                 </div>
 
                 <div class="tab-pane fade text-center" id="nav-tab-momo">
+                    <img src=<%=src%> alt="QR Code Image">
+                    <p>Scan the QR Code to complete payment!</p>
+                    <br>
                     <p class="text-middle">Momo QR payment</p>
                 </div>
 
