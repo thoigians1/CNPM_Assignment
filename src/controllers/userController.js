@@ -63,12 +63,23 @@ let getAuthPage = async (req, res) => {
     }
     if (User.roleId == 'R3') {
       try {
-        let foodtypes = await db.Foodtypes.findAll(
-          {
-            include: ["Foods"],
+        if (req.query.keywords === undefined) {
+          var foodtypes = await db.Foodtypes.findAll(
+            {
+              include: ["Foods"],
+              nest: true,
+            }
+          );
+        } else {
+          var foodtypes = await db.Foodtypes.findAll({
+            where: Sequelize.literal(`Foods.name LIKE '%${req.query.keywords}%'`),
+            include: {
+              all: true,
+              model: db.Foods,
+            },
             nest: true,
-          }
-        );
+          });
+        }
         let userOrder = await db.Orders.findOrCreate({
           where: {
             status: true,
@@ -91,6 +102,7 @@ let getAuthPage = async (req, res) => {
           contents: contents,
           userId: userId,
           firstName: firstName,
+          search: req.query.keywords
         });
       } catch (e) {
         console.log(e);

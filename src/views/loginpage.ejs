@@ -119,12 +119,12 @@
                 }),
                 success: (data) => {
                     console.log('success', data);
+                    $loginForm.submit();
                 },
                 error: function (jqXHR, error, errorThrown) {
                     console.log(error);
                 },
             })
-            $loginForm.submit();
         })
     </script>
 </body>
