@@ -5,7 +5,6 @@ import userController from "../controllers/userController";
 import paymentController from "../controllers/paymentController";
 import foodController from "../controllers/foodController";
 import tablereservationController from "../controllers/tablereservationController"
-import searchController from "../api/searchController";
 import { signIn, loginRequired, userAuthen } from '../api/auth';
 
 let router = express.Router();
@@ -26,7 +25,7 @@ let initWebRoutes = (app) => {
 
     router.use(userAuthen);
     router.use(loginRequired);
-    
+
     router.post('/auth/add-foods-to-order', orderController.addFoodToOrder);
     router.post('/auth/delete-food-from-order', orderController.deleteFoodFromOrder);
     router.post('/auth/set-status-order', orderController.orderComplete)
