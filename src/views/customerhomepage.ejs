@@ -199,7 +199,7 @@
             <div class="container col-xl-10 col-lg-12 col-12" style="margin-top: 10px;">
                 <div class="input-group rounded">
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        id="searchInput" aria-describedby="search-addon" value=<%=search %>> </input>
+                        id="searchInput" aria-describedby="search-addon" value=""> </input>
                     <span class="input-group-text border-0" id="search-addon">
                         <i class="fas fa-search"></i>
                     </span>
@@ -239,6 +239,7 @@
                                                             value="<%= foodtypes[i].Foods[j].cost %>" hidden>
                                                         <input type="number" name="orderId" value="<%= orderId%>"
                                                             hidden>
+                                                        </input>
                                                         <button type="submit" class="js-add"
                                                             style="border: none; background-color: #ffffff;">
                                                             <i class="fas fa-shopping-cart"
